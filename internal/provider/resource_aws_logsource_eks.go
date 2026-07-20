@@ -49,8 +49,9 @@ func (v specAtLeastOneOfValidator) ValidateResource(ctx context.Context, req res
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	clusterNameSet := !spec.ClusterName.IsNull() && spec.ClusterName.ValueString() != ""
-	eksArnSet := !spec.EksArn.IsNull() && spec.EksArn.ValueString() != ""
+	// IsUnknown covers values not yet resolved at plan time (e.g. each.value from for_each).
+	clusterNameSet := !spec.ClusterName.IsNull() && (spec.ClusterName.IsUnknown() || spec.ClusterName.ValueString() != "")
+	eksArnSet := !spec.EksArn.IsNull() && (spec.EksArn.IsUnknown() || spec.EksArn.ValueString() != "")
 	if !clusterNameSet && !eksArnSet {
 		resp.Diagnostics.AddAttributeError(
 			path.Root("spec"),
