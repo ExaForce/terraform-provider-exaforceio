@@ -15,11 +15,15 @@ output "discovered_clusters" {
   value = [for c in data.exaforce_aws_eks_clusters.all.clusters : c.name]
 }
 
-resource "exaforce_aws_logsource_eks" "clusters" {
-  for_each = toset([
+locals {
+  target_clusters = toset([
     "demo-eks",
-    "exaforce-eks"
+    "exaforce-eks",
   ])
+}
+
+resource "exaforce_aws_logsource_eks" "clusters" {
+  for_each = local.target_clusters
 
   spec = {
     cluster_name = each.value
