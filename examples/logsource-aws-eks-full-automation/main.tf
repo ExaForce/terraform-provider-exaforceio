@@ -1,39 +1,18 @@
-data "aws_region" "current" {}
-
-data "aws_eks_cluster" "this" {
-  name = var.cluster_name
-}
-
-data "aws_eks_cluster_auth" "this" {
-  name = var.cluster_name
-}
-
 # Step 1: Enable all EKS control plane log types.
-# Requires AWS CLI to be installed and configured with sufficient permissions.
-resource "null_resource" "eks_logging" {
-  triggers = {
-    cluster_name = var.cluster_name
-  }
-
-  provisioner "local-exec" {
-    command = <<-EOT
-      aws eks update-cluster-config \
-        --name "${var.cluster_name}" \
-        --region "${data.aws_region.current.name}" \
-        --logging '{"clusterLogging":[{"types":["api","audit","authenticator","controllerManager","scheduler"],"enabled":true}]}'
-    EOT
-  }
+resource "aws_eks_cluster" "this" {
+  name                      = var.cluster_name
+  enabled_cluster_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
 }
 
 # Step 2: Create the CloudWatch subscription filter to forward audit logs
-# to the ExaForce destination. Runs after logging is confirmed enabled.
+# to the ExaForce destination.
 resource "aws_cloudwatch_log_subscription_filter" "exaforce" {
-  name            = "exaforce-${var.cluster_name}-filter-${data.aws_region.current.name}"
+  name            = "exaforce-${var.cluster_name}"
   log_group_name  = "/aws/eks/${var.cluster_name}/cluster"
   filter_pattern  = "{ $.kind = \"*\" }"
   destination_arn = var.destination_arn
 
-  depends_on = [null_resource.eks_logging]
+  depends_on = [aws_eks_cluster.this]
 }
 
 # Step 3: Install the ExaForce agent on the cluster.
@@ -62,11 +41,10 @@ resource "helm_release" "exabot" {
     },
   ]
 
-  depends_on = [null_resource.eks_logging]
+  depends_on = [aws_eks_cluster.this]
 }
 
 # Step 4: Register the EKS cluster as a log source in ExaForce CloudScout.
-# Depends on the agent and subscription filter being in place first.
 resource "exaforce_aws_logsource_eks" "cluster" {
   spec = {
     cluster_name = var.cluster_name
