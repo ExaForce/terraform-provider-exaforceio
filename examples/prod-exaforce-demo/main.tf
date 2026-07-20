@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     exaforce = {
-      source  = "exaforce/logsource"
+      source  = "exaforce/exaforceio"
       version = "~> 0.1"
     }
   }

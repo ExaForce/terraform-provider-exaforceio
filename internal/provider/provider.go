@@ -4,7 +4,7 @@ import (
 	"context"
 	"os"
 
-	"github.com/ExaForce/terraform-provider-logsource/internal/provider/client"
+	"github.com/ExaForce/terraform-provider-exaforceio/internal/provider/client"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/function"
 	"github.com/hashicorp/terraform-plugin-framework/provider"

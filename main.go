@@ -5,7 +5,7 @@ import (
 	"flag"
 	"log"
 
-	"github.com/ExaForce/terraform-provider-logsource/internal/provider"
+	"github.com/ExaForce/terraform-provider-exaforceio/internal/provider"
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 )
 
@@ -17,7 +17,7 @@ func main() {
 	flag.Parse()
 
 	opts := providerserver.ServeOpts{
-		Address: "registry.terraform.io/exaforce/logsource",
+		Address: "registry.terraform.io/exaforce/exaforceio",
 		Debug:   debug,
 	}
 

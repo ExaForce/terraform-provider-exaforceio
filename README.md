@@ -144,8 +144,8 @@ resource "exaforce_aws_logsource_eks" "clusters" {
 ## Building from Source
 
 ```bash
-git clone https://github.com/ExaForce/terraform-provider-logsource
-cd terraform-provider-logsource
+git clone https://github.com/ExaForce/terraform-provider-exaforceio
+cd terraform-provider-exaforceio
 make build
 ```
 
@@ -154,7 +154,7 @@ To use a local build with Terraform, add a `.terraformrc` override:
 ```hcl
 provider_installation {
   dev_overrides {
-    "exaforce/logsource" = "/path/to/terraform-provider-logsource"
+    "exaforce/exaforceio" = "/path/to/terraform-provider-exaforceio"
   }
   direct {}
 }

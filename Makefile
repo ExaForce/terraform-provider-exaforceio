@@ -1,5 +1,5 @@
-BINARY     = terraform-provider-logsource
-INSTALL_DIR = ~/.terraform.d/plugins/registry.terraform.io/exaforce/logsource/1.0.0/$(shell go env GOOS)_$(shell go env GOARCH)
+BINARY     = terraform-provider-exaforceio
+INSTALL_DIR = ~/.terraform.d/plugins/registry.terraform.io/exaforce/exaforceio/1.0.0/$(shell go env GOOS)_$(shell go env GOARCH)
 
 .PHONY: build install fmt lint tidy
 

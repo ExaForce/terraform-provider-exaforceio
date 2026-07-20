@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ExaForce/terraform-provider-logsource/internal/provider/client"
+	"github.com/ExaForce/terraform-provider-exaforceio/internal/provider/client"
 )
 
 func TestDeriveLogSourceName(t *testing.T) {

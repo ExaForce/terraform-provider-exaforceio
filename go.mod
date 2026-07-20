@@ -1,4 +1,4 @@
-module github.com/ExaForce/terraform-provider-logsource
+module github.com/ExaForce/terraform-provider-exaforceio
 
 go 1.25.1
 

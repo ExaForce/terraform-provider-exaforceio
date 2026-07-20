@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     exaforce = {
-      source  = "exaforce/logsource"
+      source  = "exaforce/exaforceio"
       version = "~> 0.1"
     }
   }
@@ -18,6 +18,7 @@ output "discovered_clusters" {
 resource "exaforce_aws_logsource_eks" "clusters" {
   for_each = toset([
     "demo-eks",
+    "exaforce-eks"
   ])
 
   spec = {
