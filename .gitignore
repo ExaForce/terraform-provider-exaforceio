@@ -2,6 +2,7 @@ terraform-provider-exaforce
 .terraform/
 .terraform.lock.hcl
 *.tfstate
+*.tfstate.*
 *.tfstate.backup
 **/.terraformrc
 **/.env
