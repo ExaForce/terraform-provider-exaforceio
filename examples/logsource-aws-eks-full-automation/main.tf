@@ -1,4 +1,4 @@
-# Used by the helm provider (defined in providers.tf) for cluster authentication.
+# Used by the helm provider for cluster authentication.
 data "aws_eks_cluster" "this" {
   name = var.cluster_name
 }
@@ -18,20 +18,21 @@ resource "helm_release" "exabot" {
   namespace        = "exaforce"
   create_namespace = true
 
-  set {
-    name  = "exabotK8s.serviceAccount.roleArn"
-    value = var.exabot_role_arn
-  }
-
-  set {
-    name  = "exabotK8s.env.queueUrl"
-    value = var.exabot_sqs_url
-  }
-
-  set {
-    name  = "exabotK8s.env.configBucketId"
-    value = var.bucket_id
-  }
+  # Helm provider v3: set is a list of objects (not repeated blocks).
+  set = [
+    {
+      name  = "exabotK8s.serviceAccount.roleArn"
+      value = var.exabot_role_arn
+    },
+    {
+      name  = "exabotK8s.env.queueUrl"
+      value = var.exabot_sqs_url
+    },
+    {
+      name  = "exabotK8s.env.configBucketId"
+      value = var.bucket_id
+    },
+  ]
 }
 
 # Step 2: Create the CloudWatch subscription filter to forward audit logs

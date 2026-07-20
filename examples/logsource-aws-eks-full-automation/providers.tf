@@ -10,7 +10,7 @@ terraform {
     }
     helm = {
       source  = "hashicorp/helm"
-      version = "~> 2.0"
+      version = "~> 3.0"
     }
   }
 }
@@ -25,10 +25,9 @@ provider "aws" {
   region = var.aws_region
 }
 
-# Helm provider authenticates to EKS using AWS credentials.
-# Assumes the cluster is in the same AWS account and region as the aws provider.
+# Helm provider v3: kubernetes config is a nested object (not a block).
 provider "helm" {
-  kubernetes {
+  kubernetes = {
     host                   = data.aws_eks_cluster.this.endpoint
     cluster_ca_certificate = base64decode(data.aws_eks_cluster.this.certificate_authority[0].data)
     token                  = data.aws_eks_cluster_auth.this.token
